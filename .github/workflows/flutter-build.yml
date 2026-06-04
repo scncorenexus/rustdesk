@@ -1994,7 +1994,7 @@ jobs:
             flatpak/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}${{ matrix.job.suffix }}.flatpak
 
   build-rustdesk-web:
-    if: False
+    if: true
     name: build-rustdesk-web
     runs-on: ubuntu-22.04
     permissions:
@@ -2057,11 +2057,8 @@ jobs:
           sha256sum "${dir_name}".tar.gz
           popd
 
-      - name: Publish web
-        if: env.UPLOAD_ARTIFACT == 'true'
-        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
+      - name: Upload web artifact
+        uses: actions/upload-artifact@v4
         with:
-          prerelease: true
-          tag_name: ${{ env.TAG_NAME }}
-          files: |
-            flutter/build/rustdesk-${{ env.VERSION }}-${{ env.RELEASE_NAME }}.tar.gz
+          name: nexus-remote-web
+          path: flutter/build/rustdesk-${{ env.VERSION }}-${{ env.RELEASE_NAME }}.tar.gz
